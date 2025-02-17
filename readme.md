@@ -20,7 +20,7 @@ Install love from the official website and then run main.lua with love
 This was my first experience with lua, not having real oop and only tables 
 as a datastructure was ... new.
 
-## Handling 2 snakes
+### - Handling 2 snakes
 
 There is a main snakes table which contains the segments, directionQueue and 
 input key for each snake:
@@ -60,9 +60,20 @@ input key for each snake:
     }
 ```
 
-another interesting thing is how I used a table as an alternative to 
-switch statement. The direcion handler table takes as index a direciton enum
-(obviously also a table) and returns a handler function
+### - Directional movement
+
+Directional movement for a snake feels challenging, but once you realize the trick
+it is fairly simple. The trick is to not move the head and then the following blocks
+in following frames, instead to remove the tail and place a new sement connected to 
+the head(according to the direction you want the snake to move) which now acts as
+the new head
+
+### - Direction Lookup table
+
+Another intersting thing I did was making a lookup table for direction handling.
+The table takes in a direction enum(obviously also a table) and returns a handler 
+function. This was my first experience doing this as I have not js/python (or other
+langs where functions are first class citizens) a lot.
 
 Direction enum: 
 ```
@@ -115,4 +126,13 @@ directionHandler = {
         updateSegments(snakeIdx, {x = head.x, y =  newHeadY})
     end,
 }
+```
+
+Using the handler
+
+```
+local handler = directionHandler[direction]
+    if handler then
+handler(i)
+    end
 ```
