@@ -223,10 +223,10 @@ function love.draw()
     local snake1Score = "Green Score: " .. (#snakes[1].segments - 4) * 10
     local snake2Score = "Purple Score: " .. (#snakes[2].segments - 4) * 10
 
-    local textWidth = font:getWidth(snake2Score)
+    local fontWidth = font:getWidth(snake2Score)
 
     love.graphics.print(snake1Score, 0,0) 
-    love.graphics.print(snake2Score, sWidth-textWidth,0)
+    love.graphics.print(snake2Score, sWidth-fontWidth,0)
 
     -- draw snake 1 (green)
     love.graphics.setColor(0,1,.5)
@@ -274,10 +274,10 @@ function love.draw()
             local winnerText
 
             if snake1Score > snake2Score then
-                winnerText = "The winner is Green snake with score: " .. snake1Score
+                winnerText = "The winner is Green snake"
             elseif
                 snake1Score < snake2Score then
-                winnerText = "The winner is Purple snake with score: " .. snake2Score
+                winnerText = "The winner is Purple snake" 
             else
                 winnerText = "Game ended with a draw!"
             end
@@ -288,8 +288,11 @@ function love.draw()
             text = "Game is Paused!"
         end
 
-        textWidth = font:getWidth(text)
-        local textHeight = font:getHeight()
+        fontWidth = font:getWidth(text)
+        local textWidth = sWidth/2 - fontWidth/2
+
+        local fontHeight = font:getHeight()
+        local textHeight = sHeight/2 - fontHeight/2
 
         love.graphics.setColor(.5,.5,1)
         love.graphics.rectangle(
@@ -297,8 +300,14 @@ function love.draw()
         pauseBoxMarginX, pauseBoxMarginY,
         sWidth - pauseBoxMarginX*2, sHeight - pauseBoxMarginY*2)
 
+        local text2 = "Press Q/Esc to quite or R to restart game"
+        fontWidth = font:getWidth(text2)
+        local text2Width = sWidth/2 - fontWidth/2
+        local text2Height = textHeight + fontHeight + 2
+
         love.graphics.setColor(1,1,1)
-        love.graphics.print(text, sWidth/2 - textWidth/2, sHeight/2 - textHeight/2)
+        love.graphics.print(text, textWidth, textHeight)
+        love.graphics.print(text2, text2Width, text2Height)
     end
 end
 
@@ -306,8 +315,12 @@ function love.keypressed(key)
 
     -- event handling
 
-    if key == 'escape' then
+    if key == 'escape' or key == 'q' then
         love.event.quit()
+    end
+    
+    if key == 'r' then
+        love.load()
     end
 
     if key == 'p' then
